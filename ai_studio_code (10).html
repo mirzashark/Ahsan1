@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahsan Associates | Modern Fire Safety Assessment</title>
+    <!-- Google Fonts: Poppins for a modern, geometric look matching the logo -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* --- COLOR PALETTE FROM LOGO --- */
+        :root {
+            --dark-charcoal: #1C1C1C; /* From the dark 'A' and text */
+            --brand-blue: #5271FF; /* From the vibrant blue inner triangle */
+            --brand-blue-hover: #3A5BFF;
+            --bg-light: #F8F9FB; /* Subtle cool gray for backgrounds */
+            --white: #FFFFFF;
+            --text-gray: #555555;
+        }
+
+        /* General Reset & Typography */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        html { scroll-behavior: smooth; }
+        body { color: var(--text-gray); line-height: 1.7; background-color: var(--white); overflow-x: hidden; }
+        h1, h2, h3, h4 { color: var(--dark-charcoal); font-weight: 700; line-height: 1.2; }
+        p { margin-bottom: 15px; }
+        a { text-decoration: none; color: inherit; }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: auto;
+            padding: 80px 0;
+        }
+
+        /* --- SUBTLE ANIMATIONS (SCROLL REVEAL) --- */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+
+        /* --- BUTTONS --- */
+        .btn {
+            background-color: var(--brand-blue);
+            color: var(--white) !important;
+            padding: 12px 28px;
+            border-radius: 50px; /* Modern pill shape */
+            font-weight: 600;
+            font-size: 15px;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            display: inline-block;
+            border: 2px solid var(--brand-blue);
+            box-shadow: 0 4px 15px rgba(82, 113, 255, 0.3);
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: var(--brand-blue-hover);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(82, 113, 255, 0.4);
+        }
+        .btn-outline {
+            background-color: transparent;
+            color: var(--white) !important;
+            border-color: var(--white);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background-color: var(--white);
+            color: var(--dark-charcoal) !important;
+        }
+
+        /* --- HEADER (GLASSMORPHISM) --- */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(15px); /* Frosted glass effect */
+            -webkit-backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            z-index: 1000;
+            transition: padding 0.3s ease;
+        }
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 15px 5%; max-width: 1400px; margin: auto;
+        }
+        .logo img {
+            height: 55px; /* Adjust based on your preference */
+            transition: transform 0.3s ease;
+        }
+        .logo:hover img { transform: scale(1.05); }
+        .nav-links { list-style: none; display: flex; gap: 30px; align-items: center; }
+        .nav-links li a {
+            font-weight: 500; font-size: 14px;
+            color: var(--dark-charcoal);
+            position: relative;
+            padding-bottom: 5px;
+        }
+        /* Animated Underline */
+        .nav-links li a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: 0; left: 0; background-color: var(--brand-blue);
+            transition: width 0.3s ease;
+        }
+        .nav-links li a:hover::after { width: 100%; }
+
+        /* --- HERO SECTION (DYNAMIC CLIP-PATH) --- */
+        .hero {
+            position: relative;
+            background: linear-gradient(rgba(28, 28, 28, 0.8), rgba(28, 28, 28, 0.9)), url('https://images.unsplash.com/photo-1581094288338-2314dddb58cb?auto=format&fit=crop&w=1920&q=80') center/cover fixed;
+            color: var(--white);
+            padding: 200px 5% 150px;
+            text-align: center;
+            /* Triangle cut at the bottom mimicking the 'A' logo */
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+        }
+        .hero h1 {
+            color: var(--white); font-size: 3.5rem; max-width: 900px;
+            margin: 0 auto 20px; font-weight: 800; letter-spacing: -1px;
+        }
+        .hero h1 span { color: var(--brand-blue); }
+        .hero p { font-size: 1.2rem; max-width: 700px; margin: 0 auto 40px; opacity: 0.9; }
+        .hero-buttons { display: flex; gap: 20px; justify-content: center; }
+
+        /* --- STATS / FEATURES --- */
+        .features {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-top: -80px; /* Pull up over the hero clip-path */
+            position: relative; z-index: 10; padding: 0 5%; max-width: 1200px; margin-left: auto; margin-right: auto;
+        }
+        .feature-card {
+            background: var(--white); padding: 40px 30px; border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08); text-align: center;
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border-bottom: 4px solid var(--brand-blue);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px); box-shadow: 0 20px 40px rgba(82, 113, 255, 0.15);
+        }
+        .feature-icon-wrapper {
+            width: 70px; height: 70px; margin: 0 auto 20px; background: rgba(82, 113, 255, 0.1);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: var(--brand-blue); font-size: 30px; transition: transform 0.4s ease;
+        }
+        .feature-card:hover .feature-icon-wrapper { transform: rotateY(180deg); background: var(--brand-blue); color: var(--white); }
+
+        /* --- ABOUT SECTION --- */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .about-image { position: relative; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+        .about-image img { width: 100%; height: auto; display: block; transition: transform 0.7s ease; }
+        .about-image:hover img { transform: scale(1.05); }
+        .about-text h2 { font-size: 2.5rem; margin-bottom: 20px; }
+        .about-text h2 span { color: var(--brand-blue); }
+
+        /* --- PROCESS (MODERN VERTICAL TIMELINE) --- */
+        .process-section { background-color: var(--bg-light); }
+        .timeline { position: relative; max-width: 800px; margin: 50px auto 0; padding-left: 30px; border-left: 2px dashed rgba(82, 113, 255, 0.5); }
+        .timeline-item { position: relative; padding-bottom: 40px; padding-left: 30px; }
+        .timeline-item:last-child { padding-bottom: 0; }
+        .timeline-item::before {
+            content: ''; position: absolute; left: -42px; top: 0; width: 24px; height: 24px;
+            background: var(--brand-blue); border-radius: 50%; box-shadow: 0 0 0 6px rgba(82, 113, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .timeline-item:hover::before { box-shadow: 0 0 0 10px rgba(82, 113, 255, 0.3); transform: scale(1.2); }
+        .timeline-content { background: var(--white); padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.03); transition: transform 0.3s; }
+        .timeline-content:hover { transform: translateX(10px); }
+        .timeline-content h3 { color: var(--brand-blue); font-size: 1.2rem; margin-bottom: 5px; }
+        .step-badge { display: inline-block; background: var(--dark-charcoal); color: var(--white); font-size: 0.75rem; padding: 3px 10px; border-radius: 20px; margin-bottom: 10px; font-weight: 600; }
+
+        /* --- SERVICES (HOVER FOCUS CARDS) --- */
+        .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 30px; margin-top: 50px; }
+        .service-card {
+            background: var(--bg-light); padding: 40px 30px; border-radius: 15px;
+            transition: all 0.4s ease; position: relative; overflow: hidden; z-index: 1;
+        }
+        /* Creative Hover Fill Effect */
+        .service-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 0;
+            background: var(--brand-blue); transition: height 0.4s ease; z-index: -1;
+        }
+        .service-card:hover::before { height: 100%; }
+        .service-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(82, 113, 255, 0.2); }
+        .service-card:hover h3, .service-card:hover p, .service-card:hover i { color: var(--white); }
+        .service-card i { font-size: 40px; color: var(--brand-blue); margin-bottom: 20px; transition: color 0.4s; }
+
+        /* --- QR VERIFICATION (SPLIT LAYOUT) --- */
+        .qr-section { background: var(--dark-charcoal); color: var(--white); padding: 100px 0; }
+        .qr-section h2, .qr-section h3 { color: var(--white); }
+        .qr-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 40px; }
+        .qr-graphic { position: relative; text-align: center; }
+        .qr-graphic i { font-size: 150px; color: var(--brand-blue); animation: float 4s ease-in-out infinite; }
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-20px); } 100% { transform: translateY(0px); } }
+        
+        .qr-box { background: rgba(255,255,255,0.05); padding: 40px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
+        .qr-input-group { display: flex; gap: 10px; margin-top: 25px; }
+        .qr-input-group input {
+            flex: 1; padding: 15px 20px; border: none; border-radius: 50px;
+            font-size: 16px; background: rgba(255,255,255,0.9); outline: none; transition: box-shadow 0.3s;
+        }
+        .qr-input-group input:focus { box-shadow: 0 0 0 4px rgba(82, 113, 255, 0.3); }
+
+        /* --- CONTACT --- */
+        .contact-section { background-color: var(--bg-light); }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 60px; }
+        .contact-info-card { background: var(--brand-blue); color: var(--white); padding: 40px; border-radius: 20px; box-shadow: 0 15px 30px rgba(82, 113, 255, 0.2); }
+        .contact-info-card h3 { color: var(--white); margin-bottom: 30px; }
+        .contact-item { display: flex; align-items: flex-start; gap: 15px; margin-bottom: 25px; }
+        .contact-item i { font-size: 20px; margin-top: 5px; background: rgba(255,255,255,0.2); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
+        
+        .contact-form { background: var(--white); padding: 40px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .form-group { position: relative; margin-bottom: 25px; }
+        .form-control {
+            width: 100%; padding: 15px 0; border: none; border-bottom: 2px solid #E0E0E0;
+            background: transparent; font-size: 16px; outline: none; transition: border-color 0.3s;
+        }
+        .form-control:focus { border-bottom-color: var(--brand-blue); }
+        .form-control::placeholder { color: #aaa; }
+        textarea.form-control { resize: none; height: 100px; }
+
+        /* --- FOOTER --- */
+        footer { background-color: #111111; color: var(--white); padding: 60px 5% 30px; text-align: center; }
+        .footer-logo img { height: 60px; margin-bottom: 20px; filter: brightness(0) invert(1); opacity: 0.9; }
+        .social-links { margin: 20px 0; }
+        .social-links a {
+            display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px;
+            background: rgba(255,255,255,0.1); border-radius: 50%; margin: 0 10px;
+            transition: all 0.3s ease; color: var(--white);
+        }
+        .social-links a:hover { background: var(--brand-blue); transform: translateY(-5px); }
+        footer p { opacity: 0.5; font-size: 14px; margin-top: 30px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero { clip-path: polygon(0 0, 100% 0, 100% 95%, 50% 100%, 0 95%); padding: 150px 5% 100px; }
+            .about-grid, .qr-grid, .contact-grid { grid-template-columns: 1fr; }
+            .features { margin-top: -30px; }
+            .qr-input-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header id="header">
+        <div class="nav-container">
+            <!-- Using the Provided Logo image -->
+            <a href="#" class="logo">
+                <img src="input_file_0.png" alt="Ahsan Associates Logo">
+            </a>
+            <ul class="nav-links">
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#verification">Verification</a></li>
+            </ul>
+            <a href="#contact" class="btn">Request Assessment</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="reveal">
+            <h1>Securing Facilities. <span>Protecting Futures.</span></h1>
+            <p>Your premier Fire Safety Assessment Body in Pakistan. We deliver modern, code-compliant, and technologically verified safety assessments for industrial and commercial sectors nationwide.</p>
+            <div class="hero-buttons">
+                <a href="#services" class="btn">Explore Services</a>
+                <a href="#verification" class="btn btn-outline">Verify Report</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Floating Features -->
+    <section class="features">
+        <div class="feature-card reveal delay-1">
+            <div class="feature-icon-wrapper"><i class="fa-solid fa-map-location-dot"></i></div>
+            <h3>Pan-Pakistan Reach</h3>
+            <p>Headquartered in Karachi, our certified assessors deploy nationwide to secure your remote sites.</p>
+        </div>
+        <div class="feature-card reveal delay-2">
+            <div class="feature-icon-wrapper"><i class="fa-solid fa-shield-halved"></i></div>
+            <h3>Dynamic Expertise</h3>
+            <p>Tailored risk management explicitly designed for modern facility architectures and heavy industries.</p>
+        </div>
+        <div class="feature-card reveal delay-3">
+            <div class="feature-icon-wrapper"><i class="fa-solid fa-qrcode"></i></div>
+            <h3>Instant Verification</h3>
+            <p>Secure, transparent certification. Scan any Ahsan Associates report for instant digital authentication.</p>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="container reveal">
+        <div class="about-grid">
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80" alt="Modern Architecture">
+            </div>
+            <div class="about-text">
+                <h2>Setting the Benchmark for <span>Fire Safety.</span></h2>
+                <p>Founded in Karachi's industrial heart, Ahsan Associates is a dedicated, modern Fire Safety Assessment Body. We bridge the gap between strict regulatory requirements and actionable, real-world safety.</p>
+                <p>We partner with facility managers, plant operators, and real estate developers across Pakistan to aggressively mitigate fire risks.</p>
+                <div style="display: flex; gap: 20px; margin-top: 30px;">
+                    <div><h3 style="color: var(--brand-blue); font-size: 2rem;">100%</h3><p style="font-size: 14px; margin:0;">Code Compliant</p></div>
+                    <div><h3 style="color: var(--brand-blue); font-size: 2rem;">24/7</h3><p style="font-size: 14px; margin:0;">Online Verification</p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Timeline Section -->
+    <section id="process" class="process-section">
+        <div class="container reveal">
+            <div style="text-align: center; max-width: 600px; margin: 0 auto 40px;">
+                <h2>A Rigorous Assessment Cycle</h2>
+                <p>Our systematic, data-driven approach ensures no blind spots. We provide a transparent roadmap to total compliance.</p>
+            </div>
+            
+            <div class="timeline">
+                <div class="timeline-item reveal delay-1">
+                    <div class="timeline-content">
+                        <span class="step-badge">Phase 1</span>
+                        <h3>Discovery & Pre-assessment</h3>
+                        <p>We gather foundational data, analyze building layouts, and conduct a preliminary documentation review to identify glaring gaps prior to deployment.</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal delay-2">
+                    <div class="timeline-content">
+                        <span class="step-badge">Phase 2</span>
+                        <h3>Exhaustive Final Assessment</h3>
+                        <p>Our expert teams conduct rigorous on-site inspections of premises, active/passive equipment, and internal safety management systems.</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal delay-3">
+                    <div class="timeline-content">
+                        <span class="step-badge">Phase 3</span>
+                        <h3>Corrective Action & Reporting</h3>
+                        <p>Delivery of clear, actionable findings. You receive a dynamic report guiding you through required non-conformity resolutions.</p>
+                    </div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-content">
+                        <span class="step-badge">Phase 4</span>
+                        <h3>Certification & Follow-up</h3>
+                        <p>Final validation of implemented actions, culminating in the issuance of your secure, QR-coded compliance certificate.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="services" class="container reveal">
+        <div style="text-align: center; max-width: 700px; margin: 0 auto;">
+            <h2>Specialized Fire Solutions</h2>
+            <p>End-to-end fire safety solutions tailored to the stringent demands of Pakistan's industrial and commercial sectors.</p>
+        </div>
+        
+        <div class="services-grid">
+            <div class="service-card reveal delay-1">
+                <i class="fa-solid fa-building-shield"></i>
+                <h3>Facility Assessments</h3>
+                <p>Thorough evaluations of factories, warehouses, and commercial high-rises focusing on structural fire protection and escape routing.</p>
+            </div>
+            <div class="service-card reveal delay-2">
+                <i class="fa-solid fa-fire-extinguisher"></i>
+                <h3>Equipment Testing</h3>
+                <p>Rigorous visual and operational testing of active systems: suppression units, alarms, sprinkler arrays, and emergency lighting.</p>
+            </div>
+            <div class="service-card reveal delay-3">
+                <i class="fa-solid fa-people-group"></i>
+                <h3>Safety Training</h3>
+                <p>Empowering your workforce. We offer immersive training for facility staff focusing on rapid emergency response and evacuation.</p>
+            </div>
+            <div class="service-card reveal">
+                <i class="fa-solid fa-file-shield"></i>
+                <h3>Formal Certification</h3>
+                <p>Issuance of highly respected compliance credentials, crucial for regulators, insurers, and high-level corporate stakeholders.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- QR Verification Section -->
+    <section id="verification" class="qr-section">
+        <div class="container reveal">
+            <div class="qr-grid">
+                <div class="qr-graphic">
+                    <!-- A modern floating QR graphic setup -->
+                    <i class="fa-solid fa-qrcode"></i>
+                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 200px; height: 200px; border: 2px dashed rgba(82,113,255,0.5); border-radius: 20px; animation: spin 10s linear infinite;"></div>
+                </div>
+                
+                <div class="qr-box">
+                    <h2>Digital Authenticity. Guaranteed.</h2>
+                    <p style="opacity: 0.8; margin-bottom: 30px;">To protect clients from forged documentation, every final report from Ahsan Associates features a unique, secure QR code. Scan the code on your physical certificate, or enter the ID below for instant database verification.</p>
+                    
+                    <div class="qr-input-group">
+                        <input type="text" placeholder="Enter Certificate ID (e.g. AHS-98765)">
+                        <button class="btn">Verify Now <i class="fa-solid fa-arrow-right" style="margin-left: 5px;"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="container reveal">
+            <div style="text-align: center; margin-bottom: 50px;">
+                <h2>Initiate Your Assessment</h2>
+                <p>Deploying nationwide from our Karachi Headquarters.</p>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info-card">
+                    <h3>Contact Information</h3>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <div>
+                            <strong>Headquarters</strong>
+                            <p style="margin:0; font-size: 14px; opacity: 0.9;">Main Corporate Area, Karachi<br>Sindh, Pakistan</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-phone"></i>
+                        <div>
+                            <strong>Phone</strong>
+                            <p style="margin:0; font-size: 14px; opacity: 0.9;">+92 (21) 3XXX-XXXX<br>+92 3XX-XXXXXXX</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fa-solid fa-envelope"></i>
+                        <div>
+                            <strong>Email</strong>
+                            <p style="margin:0; font-size: 14px; opacity: 0.9;">assessments@ahsanassociates.com</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form>
+                        <div style="display: flex; gap: 20px;">
+                            <div class="form-group" style="flex: 1;">
+                                <input type="text" class="form-control" placeholder="Facility Manager Name" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <input type="text" class="form-control" placeholder="Company / Facility Name" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" class="form-control" placeholder="Corporate Email Address" required>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" required style="color: #555;">
+                                <option value="" disabled selected>Select Facility Type...</option>
+                                <option value="industrial">Industrial Plant / Manufacturing</option>
+                                <option value="warehouse">Logistics / Warehouse</option>
+                                <option value="commercial">Commercial High-Rise</option>
+                                <option value="other">Other Setup</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea class="form-control" placeholder="Detail your specific assessment requirements..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; padding: 15px;">Send Inquiry</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <!-- Using the original logo but styled to fit dark mode (via CSS filters) -->
+        <div class="footer-logo">
+            <img src="input_file_0.png" alt="Ahsan Associates Logo">
+        </div>
+        <div class="social-links">
+            <a href="#"><i class="fa-brands fa-linkedin-in"></i></a>
+            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            <a href="#"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+        <p>&copy; 2026 Ahsan Associates. All Rights Reserved. Securing Pakistan's Industrial Future.</p>
+    </footer>
+
+    <!-- SCROLL REVEAL JAVASCRIPT -->
+    <script>
+        // CSS Scroll Animation logic
+        document.addEventListener("DOMContentLoaded", function() {
+            const reveals = document.querySelectorAll(".reveal");
+
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                const elementVisible = 100;
+
+                reveals.forEach((reveal) => {
+                    const elementTop = reveal.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - elementVisible) {
+                        reveal.classList.add("active");
+                    }
+                });
+            };
+
+            // Header background on scroll
+            const header = document.getElementById("header");
+            const toggleHeaderStyle = () => {
+                if(window.scrollY > 50) {
+                    header.style.padding = "10px 5%";
+                    header.style.boxShadow = "0 4px 20px rgba(0,0,0,0.05)";
+                } else {
+                    header.style.padding = "15px 5%";
+                    header.style.boxShadow = "none";
+                }
+            };
+
+            window.addEventListener("scroll", () => {
+                revealOnScroll();
+                toggleHeaderStyle();
+            });
+            
+            // Trigger once on load
+            revealOnScroll();
+            toggleHeaderStyle();
+        });
+        
+        // Keyframes for the QR graphic spin animation
+        const style = document.createElement('style');
+        style.innerHTML = `
+            @keyframes spin {
+                100% { transform: translate(-50%, -50%) rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
